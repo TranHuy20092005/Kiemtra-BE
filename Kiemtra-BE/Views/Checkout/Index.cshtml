@@ -1,0 +1,90 @@
+﻿@using Kiemtra_BE.Models
+@model IEnumerable<OrderItem>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="~/Content/style.css" />
+    <style>
+        .checkout-container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .order-summary, .payment-info {
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+            .order-summary h2, .payment-info h2 {
+                margin-bottom: 15px;
+            }
+
+        .checkout-container input, .checkout-container select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-submit {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="checkout-container">
+        <h1>Thanh Toán</h1>
+        <div class="order-summary">
+            <h2>Thông Tin Đơn Hàng</h2>
+            <ul>
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <img src="~/Content/images/ảnh 1.jpg" alt="@item.Product.Name" style="width: 50px; vertical-align: middle;" />
+                        <span>@item.Product.Name - Số lượng: @item.Quantity - Giá: @String.Format("{0:0,0}₫", item.Product.Price)</span>
+                    </li>
+                }
+            </ul>
+            <p><strong>Tổng tiền:</strong> @String.Format("{0:0,0}₫", ViewBag.TotalAmount)</p>
+        </div>
+
+        <!-- Form thanh toán -->
+        <form method="post" action="@Url.Action("PlaceOrder", "Checkout")">
+            <div class="payment-info">
+                <h2>Thông Tin Thanh Toán</h2>
+                <label for="FullName">Họ và Tên</label>
+                <input type="text" name="FullName" required />
+
+                <label for="Address">Địa chỉ</label>
+                <input type="text" name="Address" required />
+
+                <label for="City">Thành phố</label>
+                <input type="text" name="City" required />
+
+                <label for="PhoneNumber">Số điện thoại</label>
+                <input type="text" name="PhoneNumber" required />
+
+                <label for="Email">Email</label>
+                <input type="email" name="Email" required />
+
+                <label for="PaymentMethod">Phương thức thanh toán</label>
+                <select name="PaymentMethod" required>
+                    <option value="Cash on Delivery">Thanh toán khi nhận hàng</option>
+                    <option value="Credit Card">Thẻ tín dụng</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Xác nhận thanh toán</button>
+        </form>
+    </div>
+</body>

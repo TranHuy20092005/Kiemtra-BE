@@ -1,0 +1,141 @@
+﻿@model List<Kiemtra_BE.Models.Order>
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head runat="server">
+    <title>Tiki Clone</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="navbar">
+            <div class="navbar-top">
+                <span class="freeship" >Freeship đơn từ 45k, giảm nhiều hơn cùng <b>FREESHIP XTRA</b></span>
+            </div>
+            <div class="navbar-main">
+                <div class="logo">
+                    <img src="~/Content/images/tải xuống.png" />
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Giao nhanh 2h" />
+                    <button type="submit">Tìm Kiếm</button>
+                </div>
+                <div class="menu">
+                    <a href="#">Trang chủ</a>
+                    <a href="#">Tài khoản</a>
+
+
+
+                </div>
+                <div class="location">
+                    @*<a href="#">
+                            <img src="~/Content/images/icon.jpg" style="height: 5%; width: 5%; margin:20%;" />
+                        </a>*@
+                    Giao đến: <a href="#">Q. 1, P. Bến Nghé, Hồ Chí Minh</a>
+                </div>
+            </div>
+            <div class="navbar-bottom">
+                <div class="nav-links">
+                    <a href="#">Cam kết</a>
+                    <a href="#">100% hàng thật</a>
+                    <a href="#">Freeship mọi đơn</a>
+                    <a href="#">Hoàn 200% nếu hàng giả</a>
+                    <a href="#">30 ngày đổi trả</a>
+                    <a href="#">Giao nhanh 2h</a>
+                    <a href="#">Giá siêu rẻ</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý đơn hàng</title>
+    <link rel="stylesheet" href="~/Content/style.css" />
+</head>
+<body>
+    <div class="menu-header">
+        <span>Trang chủ &gt; Đơn hàng của tôi</span>
+    </div>
+
+    <div class="account-info">
+        <h3>Tài khoản của</h3>
+        <p><strong>Tran Huy</strong></p>
+    </div>
+
+    <div class="main-container" style="display: flex;">
+        <div class="menu" style="width: 250px; padding: 20px; border-right: 1px solid #e0e0e0;">
+            <h3>Quản lý đơn hàng</h3>
+            <ul style="list-style-type: none; padding: 0;">
+                <li><a href="#">Thông tin tài khoản</a></li>
+                <li><a href="#">Thông báo của tôi</a></li>
+                <li><a href="#">Quản lý đơn hàng</a></li>
+                <li><a href="#">Quản lý đổi trả</a></li>
+                <li><a href="#">Số địa chỉ</a></li>
+                <li><a href="#">Thông tin thanh toán</a></li>
+                <li><a href="#">Đánh giá sản phẩm</a></li>
+                <li><a href="#">Sản phẩm bạn đã xem</a></li>
+                <li><a href="#">Sản phẩm yêu thích</a></li>
+                <li><a href="#">Nhận xét của tôi</a></li>
+                <li><a href="#">Chia sẻ có lời</a></li>
+                <li><a href="#">Hợp đồng bảo hiểm</a></li>
+                <li><a href="#">Mã giảm giá</a></li>
+                <li><a href="#">Astra của bạn</a></li>
+                <li><a href="#">Quản lý Tiki Xu của tôi</a></li>
+                <li><a href="#">BookCare của tôi</a></li>
+                <li><a href="#">Hỗ trợ khách hàng</a></li>
+            </ul>
+        </div>
+        <div class="container" style="flex: 1; padding: 20px;">
+            <h2>Đơn hàng của tôi</h2>
+            <div class="tabs" style="display: flex; margin-bottom: 20px;">
+                <button onclick="filterOrders('all')" class="tab-button active">Tất cả</button>
+                <button onclick="filterOrders('pending')" class="tab-button">Chờ thanh toán</button>
+                <button onclick="filterOrders('processing')" class="tab-button">Đang xử lý</button>
+                <button onclick="filterOrders('shipping')" class="tab-button">Đang vận chuyển</button>
+                <button onclick="filterOrders('delivered')" class="tab-button">Đã giao</button>
+                <button onclick="filterOrders('cancelled')" class="tab-button">Đã hủy</button>
+            </div>
+            <form method="get" action="@Url.Action("SearchOrders", "Orders")" style="margin-bottom: 20px; width: 145%; display: flex; justify-content: left;">
+                <input type="text" name="searchQuery" placeholder="Nhập Mã đơn hàng hoặc Tên sản phẩm" style="padding: 8px; width: 50%; max-width: 500px; border-radius: 4px; border: 1px solid #ccc;">
+                <button type="submit" style="padding: 8px 12px; background-color: greenyellow; color: blue; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px; ">Tìm đơn hàng</button>
+            </form>
+
+            <div class="order-list">
+                @foreach (var order in Model)
+                {
+                    <div class="order">
+                        <h3>Đơn hàng #@order.Id</h3>
+                        <p>Trạng thái: @order.Status</p>
+                        <ul class="order-items">
+                            @foreach (var item in order.Items)
+                            {
+                                <li class="order-item">
+                                    <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="product-image" />
+                                    <div class="item-details">
+                                        <h4>@item.Product.Name</h4>
+                                        <p>Số lượng: @item.Quantity</p>
+                                        <p>Giá: @String.Format("{0:0,0} đ", item.Product.Price)</p>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        <p class="order-total">Tổng tiền: @String.Format("{0:0,0} đ", order.TotalPrice)</p>
+                        <div class="order-actions">
+                            <button onclick="window.location.href='@Url.Action("Index", "Checkout", new { id = order.Id })'" style="color: white; background-color: blue;">Mua lại</button>
+                            <button onclick="window.location.href='@Url.Action("Details", "Orders", new { id = order.Id })'" style="color: white; background-color: blue;">Xem chi tiết</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+
